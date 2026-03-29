@@ -12,3 +12,16 @@ class Instructor(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['full_name']
+        verbose_name = 'Instructor'
+        verbose_name_plural = 'Instructors'
+        indexes = [
+            models.Index(fields=['is_active']),
+            models.Index(fields=['email']),
+        ]
+
+    def __str__(self):
+        status = "✓" if self.is_active else "✗"
+        return f"{self.full_name} ({self.specialty})" if self.specialty else self.full_name

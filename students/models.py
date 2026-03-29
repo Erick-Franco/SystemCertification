@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class Student(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -12,5 +13,17 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['first_name', 'last_name']
+        indexes = [
+            models.Index(fields=['is_active']),
+            models.Index(fields=['document_id']),
+            models.Index(fields=['email']),
+        ]
+
     def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.document_id})"
+
+    @property
+    def full_name(self):
         return f"{self.first_name} {self.last_name}"

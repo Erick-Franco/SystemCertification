@@ -44,4 +44,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['full_name']
 
     def __str__(self):
-        return self.email
+        role_display = dict(self.ROLE_CHOICES).get(self.role, self.role)
+        status = "✓" if self.is_active else "✗"
+        return f"{self.full_name} ({role_display}) [{status}]"
